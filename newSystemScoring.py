@@ -31,10 +31,10 @@ def recalc_ranking(oldRankingA, oldRankingB, scoreA, scoreB, gameType, gameMonth
         matchImportance = 15
 
     ratingDifferenceA = oldRankingA - oldRankingB
-    expectedResultA = 1 / (10*(-1*ratingDifferenceA/600) + 1)
+    expectedResultA = 1 / (10**(-1*ratingDifferenceA/400) + 1)
     ratingDifferenceB = oldRankingB - oldRankingA
-    expectedResultB = 1 / (10*(-1*ratingDifferenceB/600) + 1)
+    expectedResultB = 1 / (10**(-1*ratingDifferenceB/400) + 1)
 
-    newRankingA = oldRankingA + matchImportance * (matchResultA - expectedResultB)
-    newRankingB = oldRankingB + matchImportance * (matchResultB - expectedResultA)
+    newRankingA = oldRankingA + matchImportance * (matchResultA - expectedResultA)
+    newRankingB = oldRankingB + matchImportance * (matchResultB - expectedResultB)
     return newRankingA, newRankingB
