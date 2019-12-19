@@ -52,7 +52,7 @@ CONFED = {'UEFA': (['albania', 'andorra', 'armenia', 'austria', 'austria', 'azer
                 'tahiti', 'tonga', 'vanuatu'], .85)}
 
 def extract_data(countries):
-    file = open("resultsog.csv", encoding="utf8")
+    file = open("results.csv", encoding="utf8")
     data = file.readlines()
     # remove the header
     data.remove(data[0])
@@ -96,24 +96,30 @@ def old_system(matches, ranking, teams):
     for key in teams:
         total[key] = []
 
-    count = 0
     for game in matches:
+        # result of a game
         m = [0]*2
+        # importance of a game
         i = [0]*2
+        # strength of opposing team
         t = [0]*2
+        # region of the teams
         c = [0]*2
         
         winner = ''
         loser = ''
         draw = False
         
+        # check to see if both sides have the same number of goals = draw
         if game[3] == game[4]:
             draw = True
             winner = game[1].lower()
             loser = game[2].lower()
+        # home side wins
         elif game[3] > game[4]:
             winner = game[1].lower()
             loser = game[2].lower()
+        # away side wins
         else: 
             winner = game[2].lower()
             loser = game[1].lower()            
@@ -130,15 +136,18 @@ def old_system(matches, ranking, teams):
         
         # Calculate M 
         penalty = (random.randint(0,100))/100
-        if draw == False:    
+        if draw == False:  
+            # calculated from data
             if penalty < .25:
                 count += 1
                 m[0] = 2
                 if draw != True:
                     m[1] = 1
+            # won a game normally
             else:
                 m[0] = 3
                 m[1] = 0
+        # draw
         else:
             m[0] = 1
             m[1] = 1
@@ -148,9 +157,9 @@ def old_system(matches, ranking, teams):
         
         #Calculate T 
         if ranking.index(winner) + 1 <= 50: t[0] = 50
-        else: t[0] = ranking.index(winner) + 1
+        else: t[0] = 200 - ranking.index(winner) + 1
         if ranking.index(loser) + 1 <= 50: t[1] = 50
-        else: t[1] = ranking.index(loser) + 1
+        else: t[1] = 200- ranking.index(loser) + 1
         #print(t)
         
         #Calculate C 
