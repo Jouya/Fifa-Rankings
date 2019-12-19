@@ -222,7 +222,10 @@ def main():
     teams, start_ranking = old_ranking()
     match_fixtures = extract_data(teams)
     
-    old_system(match_fixtures, start_ranking, teams)
+    points = old_system(match_fixtures, start_ranking, teams)
+    
+    sort = {k: v for k, v in sorted(points.items(), key=lambda item: item[1], reverse=True)}
+    new_rankings = list(sort.keys())
     #print(start_ranking)
     #print(match_fixtures)
     #print(teams)
