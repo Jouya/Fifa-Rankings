@@ -139,7 +139,6 @@ def old_system(matches, ranking, teams):
         if draw == False:  
             # calculated from data
             if penalty < .25:
-                count += 1
                 m[0] = 2
                 if draw != True:
                     m[1] = 1
@@ -154,6 +153,17 @@ def old_system(matches, ranking, teams):
         #print(m)
          
         #Calculate I (steal from the boys' work)
+        
+        if (game[5].lower() == "friendly"):
+            i[0] = 1
+            i[1] = 1
+        elif (game[5].lower() == "fifa World Cup qualification"):
+            i[0] = 2.5
+            i[1] = 2.5
+        # confedration cups
+        else:
+            i[0] = 3
+            i[1] = 3
         
         #Calculate T 
         if ranking.index(winner) + 1 <= 50: t[0] = 50
@@ -171,8 +181,8 @@ def old_system(matches, ranking, teams):
         #print(c)
     
         #Calculate 
-        winner_points = m[0] * t[0] * c[0]
-        loser_points = m[1] * t[1] * c[1]
+        winner_points = m[0] * t[0] * c[0] * i[0]
+        loser_points = m[1] * t[1] * c[1] * i[1]
         
         # P = M X I x T X C
         total[winner].append(winner_points)
@@ -183,7 +193,7 @@ def old_system(matches, ranking, teams):
         if points != []:
             averages[country] = int(statistics.mean(points))
         
-    #print(averages)
+    print(averages)
     return averages
 
 def main():
