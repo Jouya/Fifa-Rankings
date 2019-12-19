@@ -1,12 +1,8 @@
+""" Authors: Jouya Mahmoudi  """
+
 import csv
-def old_model():
-    return None
 
-def new_model():
-    return None
-
-
-def data_extract():
+def extract_data():
     file = open("results.csv", encoding="utf8")
     data = file.readlines()
     # remove the header
@@ -20,23 +16,34 @@ def data_extract():
             record = True
             
         if (record):
-            wanted_data.append(row)
-            info = row.split(",")
+            info = row.strip().split(",")
+            wanted_data.append(info)
             # new country
             if (info[1].lower() not in teams.keys()):
                 teams[info[1].lower()] = 0
             
         if (int(row[0:4]) == 2014 and int(row[5:7]) == 5 and int(row[8:10]) > 11):
             break;
-
+        
     return wanted_data 
 
 def old_ranking():
+    file = open("initial2010Rankings.csv", encoding="utf8")
+    data = file.readlines()
+    teams = {}
+    for row in data:
+        info = row.lstrip().rstrip().strip("\ufeff").split(",")
+        
+        teams[info[0].lower()] = info[1]
+        
     
+    return teams
     
 def main():
-    wanted_data = data_extract()
+    match_fixtures = extract_data()
     teams = old_ranking()
+    print(match_fixtures)
+    #print(teams)
     
     
     
