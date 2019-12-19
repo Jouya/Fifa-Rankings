@@ -3,6 +3,7 @@
 import csv
 import random
 import statistics
+import datetime
 
 CONFED = {'UEFA': (['albania', 'andorra', 'armenia', 'austria', 'austria', 'azerbaijan',
                  'belarus', 'belgium', 'bosnia and herzegovina', 'bulgaria', 
