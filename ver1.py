@@ -229,7 +229,7 @@ def main():
     #print(start_ranking)
     #print(match_fixtures)
     #print(teams)
-    
+    print(new_rankings)
     
     
 main()
