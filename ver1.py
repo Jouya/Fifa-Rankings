@@ -153,11 +153,10 @@ def old_system(matches, ranking, teams):
         #print(m)
          
         #Calculate I (steal from the boys' work)
-        
         if (game[5].lower() == "friendly"):
             i[0] = 1
             i[1] = 1
-        elif (game[5].lower() == "fifa World Cup qualification"):
+        elif (game[5].lower() == "fifa world Cup qualification"):
             i[0] = 2.5
             i[1] = 2.5
         # confedration cups
