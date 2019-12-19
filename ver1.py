@@ -183,6 +183,28 @@ def old_system(matches, ranking, teams):
         winner_points = m[0] * t[0] * c[0] * i[0]
         loser_points = m[1] * t[1] * c[1] * i[1]
         
+        #Weight game by time played
+        match_date = datetime.datetime.strptime(game[0],"%Y-%m-%d")
+         
+        year_two = [datetime.datetime.strptime('2012-06-12', "%Y-%m-%d"),
+                    datetime.datetime.strptime('2013-06-11', "%Y-%m-%d")]
+                    
+        year_three = [datetime.datetime.strptime('2011-06-12', "%Y-%m-%d"),
+                    datetime.datetime.strptime('2012-06-11', "%Y-%m-%d")]
+        
+        year_four = [datetime.datetime.strptime('2010-06-12', "%Y-%m-%d"),
+                    datetime.datetime.strptime('2011-06-11', "%Y-%m-%d")]
+        
+        if year_two[0] <= match_date <= year_two[1]:
+            winner_points *= 0.5
+            loser_points *= 0.5
+        elif year_three[0] <= match_date <= year_three[1]:
+            winner_points *= 0.3
+            loser_points *= 0.3
+        elif year_four[0] <= match_date <= year_four[1]:
+            winner_points *= 0.2
+            loser_points *= 0.2   
+        
         # P = M X I x T X C
         total[winner].append(winner_points)
         total[loser].append(loser_points)
