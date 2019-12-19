@@ -1,4 +1,4 @@
-""" Authors: Jouya Mahmoudi  """
+""" Authors: Jouya Mahmoudi, Anam Shah, Drew, Roger  """
 
 import csv
 import random
@@ -52,8 +52,8 @@ CONFED = {'UEFA': (['albania', 'andorra', 'armenia', 'austria', 'austria', 'azer
                 'new zealand', 'papua new guinea', 'samoa', 'solomon islands', 
                 'tahiti', 'tonga', 'vanuatu'], .85)}
 
-def extract_data(countries):
-    file = open("resultsog.csv", encoding="utf8")
+def get_match_fixtures(countries):
+    file = open("results.csv", encoding="utf8")
     data = file.readlines()
     # remove the header
     data.remove(data[0])
@@ -78,7 +78,7 @@ def extract_data(countries):
     file.close()
     return wanted_data 
 
-def old_ranking():
+def Data_from_2010():
     file = open("initial2010Rankings.csv", encoding="utf8")
     data = file.readlines()
     teams = {}
@@ -87,7 +87,7 @@ def old_ranking():
         info = row.lstrip().rstrip().strip("\ufeff").split(",")
         positions.append(info[0].lower())
         #print(info)
-        teams[info[0].lower()] = info[1]
+        teams[info[0].lower()] = int(info[1])
         
     
     return teams, positions
@@ -214,19 +214,78 @@ def old_system(matches, ranking, teams):
         if points != []:
             averages[country] = int(statistics.mean(points))
         
-    print(averages)
     return averages
 
+def recalc_ranking(oldRankingA, oldRankingB, scoreA, scoreB, gameType, gameMonth):
+
+    if scoreA > scoreB:
+        matchResultA = 1
+        matchResultB = 0
+    elif scoreB > scoreA:
+        matchResultA = 0
+        matchResultB = 1
+    else:
+        matchResultA = 0.5
+        matchResultB = 0.5
+
+    matchImportance = 0
+    nationsMatches = ["Cup", "Games", "Copa", "Nations", "Tournament"]
+    confederationMatches = ["Championship", "AFC", "CAF", "CONCACAF", "CONMEBOL", "OFC", "UEFA"]
+
+    
+    
+    if "Friendly" in gameType:
+        if gameMonth in range(3,12):
+            matchImportance = 10
+        else:
+            matchImportance = 5
+    elif "qualification" in gameType:
+        matchImportance = 25
+    for nationString in nationsMatches:
+        if nationString in gameType:
+            matchImportance = 20
+    for confederationString in confederationMatches:
+        if confederationString in gameType:
+            matchImportance = 37.5
+    if matchImportance == 0:
+        matchImportance = 15
+
+    ratingDifferenceA = oldRankingA - oldRankingB
+    expectedResultA = 1 / (10**(-1*ratingDifferenceA/400) + 1)
+    ratingDifferenceB = oldRankingB - oldRankingA
+    expectedResultB = 1 / (10**(-1*ratingDifferenceB/400) + 1)
+
+    newRankingA = oldRankingA + matchImportance * (matchResultA - expectedResultA)
+    newRankingB = oldRankingB + matchImportance * (matchResultB - expectedResultB)
+    return int(newRankingA), int(newRankingB)
+
+
 def main():
-    teams, start_ranking = old_ranking()
-    match_fixtures = extract_data(teams)
+    teams, start_ranking = Data_from_2010()
+    match_fixtures = get_match_fixtures(teams)
     points = old_system(match_fixtures, start_ranking, teams)
     
+    # start off from each team's 2010 points/rankings
+    new_model = teams
+    # apply the new 2018 scoring model to match_fixtures from 2010-2014
+    for game in match_fixtures:
+        home_team = game[1].lower()
+        away_team = game[2].lower()
+        home_ranking = start_ranking.index(home_team)
+        away_ranking = start_ranking.index(away_team)
+        # calcuate the resulting points from the given match
+        home_score, away_score = recalc_ranking(home_ranking,away_ranking,game[3],game[4],game[5],game[0][5:7])
+        # add/subtract to/from their score
+        new_model[home_team] += home_score
+        new_model[away_team] += away_score
+  
+      
     sort = {k: v for k, v in sorted(points.items(), key=lambda item: item[1], reverse=True)}
-    print(start_ranking)
-    new_rankings = list(sort.keys())
-    print(new_rankings)
-    #print(sort)
+    sort2 = {k: v for k, v in sorted(new_model.items(), key=lambda item: item[1], reverse=True)}
+    new_rankings = list(sort.items())
+    print("Old System", new_rankings)
+    new_model = list(sort2.items())
+    print("New System", new_model)
     
     #print(start_ranking)
     #print(match_fixtures)
