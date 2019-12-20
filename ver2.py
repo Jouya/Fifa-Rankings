@@ -95,8 +95,8 @@ def Data_from_2010():
 def old_system(matches, ranking, teams):
     total = {}
     for key, val in teams.items():
-        total[key] = [int(val)]
-        #total[key] = []
+        #total[key] = [int(val)]
+        total[key] = []
 
     for game in matches:
         # result of a game
@@ -162,6 +162,9 @@ def old_system(matches, ranking, teams):
             i[0] = 2.5
             i[1] = 2.5
         # confedration cups
+        else:
+            i[0] = 3
+            i[1] = 3
  
         
         #Calculate T 
@@ -231,8 +234,7 @@ def recalc_ranking(oldRankingA, oldRankingB, scoreA, scoreB, gameType, gameMonth
     matchImportance = 0
     nationsMatches = ["Cup", "Games", "Copa", "Nations", "Tournament"]
     confederationMatches = ["Championship", "AFC", "CAF", "CONCACAF", "CONMEBOL", "OFC", "UEFA"]
-
-    
+ 
     
     if "Friendly" in gameType:
         if gameMonth in range(3,12):
@@ -267,6 +269,9 @@ def main():
     
     # start off from each team's 2010 points/rankings
     new_model = teams
+    games_played = {}
+    for teams in new_model:
+        games_played[teams] = 0
     # apply the new 2018 scoring model to match_fixtures from 2010-2014
     for game in match_fixtures:
         home_team = game[1].lower()
@@ -276,9 +281,11 @@ def main():
         # calcuate the resulting points from the given match
         home_score, away_score = recalc_ranking(home_ranking,away_ranking,game[3],game[4],game[5],game[0][5:7])
         # add/subtract to/from their score
+        games_played[home_team] += 1
+        games_played[away_team] += 1
         new_model[home_team] += home_score
         new_model[away_team] += away_score
-  
+
       
     sort = {k: v for k, v in sorted(points.items(), key=lambda item: item[1], reverse=True)}
     sort2 = {k: v for k, v in sorted(new_model.items(), key=lambda item: item[1], reverse=True)}
@@ -286,6 +293,7 @@ def main():
     print("Old System", new_rankings)
     new_model = list(sort2.items())
     print("New System", new_model)
+    print(games_played["spain"])
     
     #print(start_ranking)
     #print(match_fixtures)
