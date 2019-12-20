@@ -271,16 +271,14 @@ def main():
     new_model = teams
     games_played = {}
     for teams in new_model:
-        new_model[teams] = 0
+        #new_model[teams] = 0
         games_played[teams] = 0
     # apply the new 2018 scoring model to match_fixtures from 2010-2014
     for game in match_fixtures:
         home_team = game[1].lower()
         away_team = game[2].lower()
-        home_ranking = start_ranking.index(home_team)
-        away_ranking = start_ranking.index(away_team)
         # calcuate the resulting points from the given match
-        home_score, away_score = recalc_ranking(home_ranking,away_ranking,game[3],game[4],game[5],game[0][5:7])
+        home_score, away_score = recalc_ranking( new_model[home_team],new_model[away_team],game[3],game[4],game[5],game[0][5:7])
         # add/subtract to/from their score
         games_played[home_team] += 1
         games_played[away_team] += 1
