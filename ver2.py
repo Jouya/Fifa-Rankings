@@ -289,8 +289,13 @@ def main():
     sort2 = {k: v for k, v in sorted(new_model.items(), key=lambda item: item[1], reverse=True)}
     new_rankings = list(sort.items())
     #print("Old System", new_rankings)
-    new_model = list(sort2.items())
-    print("New System", new_model)
+    new_model = (sort2)
+    
+    print("New System:")
+    counter = 1
+    for team in new_model:
+        print(str(counter) + ". " + team.capitalize()  + " = Points: " + str(new_model[team]) + ", Match Played: " + str(games_played[team]))
+        counter += 1
     
     
     #print(start_ranking)
