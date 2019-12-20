@@ -1,4 +1,4 @@
-""" Authors: Jouya Mahmoudi, Anam Shah, Drew, Roger  """
+""" Authors: Jouya Mahmoudi, Anam Shah, Drew Macdonald , Roger Trejo  """
 
 import csv
 import random
