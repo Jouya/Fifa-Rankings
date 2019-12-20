@@ -294,7 +294,7 @@ def main():
     print("New System:")
     counter = 1
     for team in new_model:
-        print(str(counter) + ". " + team.capitalize()  + " = Points: " + str(new_model[team]) + ", Match Played: " + str(games_played[team]))
+        print(str(counter) + ". " + team.capitalize()  + " = Points: " + str(new_model[team]) + ", Matches Played: " + str(games_played[team]))
         counter += 1
     
     
