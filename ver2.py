@@ -63,8 +63,7 @@ def get_match_fixtures(countries):
     for row in data:
         # range of 2010 - 2014
         if (int(row[0:4]) == 2010 and int(row[5:7]) == 4 and int(row[8:10]) > 12):
-            record = True
-            
+            record = True       
         if (record):
             info = row.strip().split(",")
             if (info[1].lower() in countries and info[2].lower() in countries):
@@ -289,7 +288,7 @@ def main():
     sort = {k: v for k, v in sorted(points.items(), key=lambda item: item[1], reverse=True)}
     sort2 = {k: v for k, v in sorted(new_model.items(), key=lambda item: item[1], reverse=True)}
     new_rankings = list(sort.items())
-    print("Old System", new_rankings)
+    #print("Old System", new_rankings)
     new_model = list(sort2.items())
     print("New System", new_model)
     
