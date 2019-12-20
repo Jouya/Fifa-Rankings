@@ -271,6 +271,7 @@ def main():
     new_model = teams
     games_played = {}
     for teams in new_model:
+        new_model[teams] = 0
         games_played[teams] = 0
     # apply the new 2018 scoring model to match_fixtures from 2010-2014
     for game in match_fixtures:
@@ -283,8 +284,8 @@ def main():
         # add/subtract to/from their score
         games_played[home_team] += 1
         games_played[away_team] += 1
-        new_model[home_team] += home_score
-        new_model[away_team] += away_score
+        new_model[home_team] = home_score
+        new_model[away_team] = away_score
 
       
     sort = {k: v for k, v in sorted(points.items(), key=lambda item: item[1], reverse=True)}
@@ -293,7 +294,7 @@ def main():
     print("Old System", new_rankings)
     new_model = list(sort2.items())
     print("New System", new_model)
-    print(games_played["spain"])
+    
     
     #print(start_ranking)
     #print(match_fixtures)
